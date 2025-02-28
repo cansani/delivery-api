@@ -1,6 +1,7 @@
 import { DeliversStatusController } from './../controllers/DeliveriesStatusController';
 import { DeliveriesController } from "@/controllers/DeliveriesController";
-import { verifyJWT } from "@/middlewares/verify-jwt";
+import { verifyJWT } from "@/middlewares/verifyJWT";
+import { verifyUserRole } from '@/middlewares/verifyUserRole';
 import { FastifyInstance } from "fastify";
 
 export async function deliveriesRoutes(app: FastifyInstance) {
@@ -8,6 +9,7 @@ export async function deliveriesRoutes(app: FastifyInstance) {
   const deliversStatusController = new DeliversStatusController()
 
   app.addHook(`onRequest`, verifyJWT)
+  app.addHook('onRequest', verifyUserRole('sale'))
 
   app.post('/', deliveriesController.store)
   app.get('/', deliveriesController.index)
