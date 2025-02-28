@@ -22,6 +22,10 @@ export class DeliveriesLogsController {
       throw new AppError('Essa entrega nao existe.', 404)
     }
 
+    if (delivery.status === 'delivered') {
+      throw new AppError('O pedido ja foi entregue.')
+    }
+
     if (delivery.status === 'processing') {
       throw new AppError('O status atual e de processando, troque para enviado.', 404)
     }
